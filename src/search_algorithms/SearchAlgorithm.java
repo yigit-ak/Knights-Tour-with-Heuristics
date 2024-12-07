@@ -4,7 +4,6 @@ import problem_definition.KnightLocation;
 import problem_definition.State;
 
 import java.util.List;
-import java.util.Vector;
 
 abstract public class SearchAlgorithm {
     protected final State initialState; // n*n square board
@@ -20,11 +19,17 @@ abstract public class SearchAlgorithm {
 
     abstract public List<State> expand(State state);
 
-    abstract public int getTimeSpent();
+    public int getTimeSpent() {
+        return this.timeSpent;
+    }
 
-    abstract public void setTimeSpent(int timeSpent);
+    public void setTimeSpent(int timeSpent) {
+        this.timeSpent = timeSpent;
+    }
 
-    abstract public int getExpandedNodeCount();
+    public int getExpandedNodeCount() {
+        return this.totalExpandedNodeCount;
+    }
 
     public void increaseTotalExpandedNodeCountBy(int expandedNodeCount) {
         totalExpandedNodeCount += expandedNodeCount;
