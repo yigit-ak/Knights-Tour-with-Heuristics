@@ -3,7 +3,6 @@ package search_algorithms;
 import problem_definition.Location;
 import problem_definition.State;
 
-import javax.swing.text.html.Option;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +31,7 @@ abstract public class SearchAlgorithm {
             Location step = currentState.get().locationOfLastPlacedKnight();
             solutionPath.addFirst(step);
             currentState = currentState.get().parent();
-        } while(currentState.isPresent());
+        } while (currentState.isPresent());
 
         return solutionPath;
     }
