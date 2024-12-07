@@ -1,8 +1,10 @@
 package search_algorithms;
 
+import problem_definition.State;
+
 public class DepthFirstSearch extends SearchAlgorithm {
-    public DepthFirstSearch(int boardSize) {
-        super(boardSize);
+    public DepthFirstSearch(State initialState) {
+        super(initialState);
     }
 
     @Override

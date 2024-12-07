@@ -1,15 +1,15 @@
 package search_algorithms;
 
-import problem_definition.KnightLocation;
+import problem_definition.Location;
 import problem_definition.State;
 
+import javax.swing.text.html.Option;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 abstract public class SearchAlgorithm {
-    protected final State initialState; // n*n square board
-    protected int timeSpent; // time spent to find a solution (in milliseconds)
-    protected int totalExpandedNodeCount;
-    protected List<KnightLocation> solutionPath; // solution path
+    protected final State initialState;
 
     public SearchAlgorithm(State initialState) {
         this.initialState = initialState;
@@ -17,33 +17,23 @@ abstract public class SearchAlgorithm {
 
     abstract public void search();
 
-    abstract public List<State> expand(State state);
+    public List<State> expand(State state) {
+        Location lastPlacedKnight = state.locationOfLastPlacedKnight();
+        List<Location> availableMoves = lastPlacedKnight.getLocationsForNextMove(state.board());
 
-    public int getTimeSpent() {
-        return this.timeSpent;
+        return availableMoves.stream().map(state::addKnightAt).toList();
     }
 
-    public void setTimeSpent(int timeSpent) {
-        this.timeSpent = timeSpent;
-    }
+    public List<Location> getSolutionPath(State solution) {
+        List<Location> solutionPath = new LinkedList<>();
 
-    public int getExpandedNodeCount() {
-        return this.totalExpandedNodeCount;
-    }
+        Optional<State> currentState = Optional.of(solution);
+        do {
+            Location step = currentState.get().locationOfLastPlacedKnight();
+            solutionPath.addFirst(step);
+            currentState = currentState.get().parent();
+        } while(currentState.isPresent());
 
-    public void increaseTotalExpandedNodeCountBy(int expandedNodeCount) {
-        totalExpandedNodeCount += expandedNodeCount;
-    }
-
-    public List<KnightLocation> getSolutionPath() {
         return solutionPath;
-    }
-
-    public void addStepToSolutionPath(KnightLocation newLocation) {
-        solutionPath.add(newLocation);
-    }
-
-    public void setSolutionPath(List<KnightLocation> newSolutionPath) {
-        solutionPath = newSolutionPath;
     }
 }
