@@ -26,12 +26,13 @@ abstract public class SearchAlgorithm {
     public List<Location> getSolutionPath(State solution) {
         List<Location> solutionPath = new LinkedList<>();
 
+        // start from leaf, go until the root
         Optional<State> currentState = Optional.of(solution);
-        do {
+        while (currentState.isPresent()) {
             Location step = currentState.get().locationOfLastPlacedKnight();
             solutionPath.addFirst(step);
             currentState = currentState.get().parent();
-        } while (currentState.isPresent());
+        }
 
         return solutionPath;
     }
