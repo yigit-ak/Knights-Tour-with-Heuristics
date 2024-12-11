@@ -3,9 +3,7 @@ package problem_definition;
 import java.util.List;
 import java.util.stream.Stream;
 
-public record Location(
-        int row,
-        int column) {
+public record Location(int row, int column) {
 
     private boolean isValid(boolean[][] board) {
         return isWithinBoard(board.length) && isEmpty(board);
