@@ -2,7 +2,7 @@ package problem_definition;
 
 import java.util.Optional;
 
-import static util.array_helper.deepCopy;
+import static util.ArrayHelper.deepCopy;
 
 /**
  * @param board true: a knight occupies that square
@@ -17,11 +17,7 @@ public record State(boolean[][] board, Location locationOfLastPlacedKnight, Opti
 
     public State addKnightAt(Location location) {
         boolean[][] newBoard = deepCopy(board);
-
-        int row = location.row();
-        int column = location.column();
-        newBoard[row][column] = true;
-
+        newBoard[location.row()][location.column()] = true;
         return new State(newBoard, location, Optional.of(this));
     }
 
