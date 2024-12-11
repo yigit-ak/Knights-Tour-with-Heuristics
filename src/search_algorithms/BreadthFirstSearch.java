@@ -15,12 +15,19 @@ public class BreadthFirstSearch extends SearchAlgorithm {
     @Override
     public void search() {
         State currentState = initialState;
-        do {
-            assert currentState != null;
-            List<State> successors = expand(currentState);
-            applyGoalTest(successors);
-            queue.addAll(successors);
+        while (shouldContinueSearch(currentState)) {
+            processState(currentState);
             currentState = queue.poll();
-        } while(!(isSolutionFound() || queue.isEmpty())); // stop if solution found or queue is empty
+        }
+    }
+
+    private boolean shouldContinueSearch(State currentState) {
+        return currentState != null && !isSolutionFound();
+    }
+
+    private void processState(State currentState) {
+        List<State> successors = expand(currentState);
+        applyGoalTest(successors);
+        queue.addAll(successors);
     }
 }
