@@ -8,8 +8,7 @@ public record Location(
         int column) {
 
     private boolean isValid(boolean[][] board) {
-        int boardSize = board.length;
-        return isWithinBoard(boardSize) && isEmpty(board);
+        return isWithinBoard(board.length) && isEmpty(board);
     }
 
     private boolean isWithinBoard(int boardSize) {
@@ -21,12 +20,17 @@ public record Location(
     }
 
     public List<Location> getLocationsForNextMove(boolean[][] board) {
-        Location[] nextPossibleLocations = {
+        return Stream.of(generateNextPossibleLocations())
+                .filter(location -> location.isValid(board))
+                .toList();
+    }
+
+    private Location[] generateNextPossibleLocations() {
+        return new Location[] {
                 new Location(row + 2, column - 1), new Location(row - 1, column + 2),
                 new Location(row + 2, column + 1), new Location(row + 1, column + 2),
                 new Location(row - 2, column - 1), new Location(row - 1, column - 2),
                 new Location(row - 2, column + 1), new Location(row + 1, column - 2)
         };
-        return Stream.of(nextPossibleLocations).filter(location -> location.isValid(board)).toList();
     }
 }
