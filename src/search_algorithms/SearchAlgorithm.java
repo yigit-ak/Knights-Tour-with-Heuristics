@@ -11,9 +11,11 @@ import java.util.Optional;
 abstract public class SearchAlgorithm {
     protected final State initialState;
     protected State solution;
+    protected int numberOfNodesExpanded;
 
     public SearchAlgorithm(State initialState) {
         this.initialState = initialState;
+        this.numberOfNodesExpanded = 0;
     }
 
     abstract public void search();
@@ -21,7 +23,6 @@ abstract public class SearchAlgorithm {
     protected List<State> expand(State state) {
         Location lastPlacedKnight = state.locationOfLastPlacedKnight();
         List<Location> availableMoves = lastPlacedKnight.getLocationsForNextMove(state.board());
-
         return availableMoves.stream().map(state::addKnightAt).toList();
     }
 
@@ -51,5 +52,13 @@ abstract public class SearchAlgorithm {
         }
 
         return solutionPath;
+    }
+
+    public int getNumberOfNodesExpanded() {
+        return numberOfNodesExpanded;
+    }
+
+    protected void incrementNodesExpanded() {
+        numberOfNodesExpanded++;
     }
 }

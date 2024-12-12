@@ -40,5 +40,8 @@ public class Main {
         } else {
             System.out.println("No solution exists.");
         }
+
+        System.out.println("Number of nodes expanded: " +
+                searchAlgorithm.getNumberOfNodesExpanded());
     }
 }

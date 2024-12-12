@@ -22,6 +22,7 @@ public class DepthFirstSearch extends SearchAlgorithm {
     }
 
     private void processState(State currentState) {
+        incrementNodesExpanded();
         List<State> successors = expand(currentState);
         applyGoalTest(successors);
         pushSuccessorsToStack(successors); // Push successors onto the stack

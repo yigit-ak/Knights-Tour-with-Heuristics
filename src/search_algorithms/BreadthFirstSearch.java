@@ -26,6 +26,7 @@ public class BreadthFirstSearch extends SearchAlgorithm {
     }
 
     private void processState(State currentState) {
+        incrementNodesExpanded();
         List<State> successors = expand(currentState);
         applyGoalTest(successors);
         queue.addAll(successors);
