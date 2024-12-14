@@ -11,6 +11,7 @@ import java.util.Optional;
 abstract public class SearchAlgorithm {
     protected final State initialState;
     protected State solution;
+    protected int expandedNodeCount = 1;
 
     public SearchAlgorithm(State initialState) {
         this.initialState = initialState;
@@ -21,6 +22,8 @@ abstract public class SearchAlgorithm {
     protected List<State> expand(State state) {
         Location lastPlacedKnight = state.locationOfLastPlacedKnight();
         List<Location> availableMoves = lastPlacedKnight.getLocationsForNextMove(state.board());
+
+        incrementExpandedNodeCount(availableMoves.size());
 
         return availableMoves.stream().map(state::addKnightAt).toList();
     }
@@ -51,5 +54,17 @@ abstract public class SearchAlgorithm {
         }
 
         return solutionPath;
+    }
+
+    public int getBoardSize() {
+        return initialState == null ? 0 : initialState.board().length;
+    }
+
+    public int getExpandedNodeCount() {
+        return this.expandedNodeCount;
+    }
+
+    protected void incrementExpandedNodeCount(int nodeCount) {
+        this.expandedNodeCount += nodeCount;
     }
 }
