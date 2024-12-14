@@ -1,6 +1,7 @@
 import problem_definition.Location;
 import problem_definition.State;
 import search_algorithms.*;
+import experiment.ExperimentInstance;
 
 import java.lang.reflect.Constructor;
 
@@ -29,18 +30,5 @@ public class Main {
             }
         }
 
-    }
-
-    private static void printResults(ExperimentInstance experimentInstance) {
-        System.out.println("Search method: " + method);
-        System.out.println("Time limit: " + timeLimit + " seconds");
-
-        if (searchAlgorithm.isSolutionFound()) {
-            System.out.println("A solution found.");
-            System.out.println("Solution path: " + searchAlgorithm.getSolutionPath());
-            System.out.println("Time spent: " + timeSpent + " milliseconds");
-        } else {
-            System.out.println("No solution found within time limit.");
-        }
     }
 }
