@@ -5,38 +5,31 @@ import problem_definition.Location;
 
 import java.util.List;
 import java.util.Comparator;
+import java.util.Stack;
 
 public class DfsWithHeuristicH2 extends SearchAlgorithm {
+    private final Stack<State> stack = new Stack<>();
+
     public DfsWithHeuristicH2(State initialState) {
         super(initialState);
+        stack.push(initialState);
     }
 
     @Override
     public void search() {
-        dfsWithHeuristic(initialState);
-    }
+        while (!stack.isEmpty() && !isSolutionFound()) {
+            State currentState = stack.pop(); // Pop the most recent state (LIFO)
+            List<State> successors = expand(currentState);
+            applyGoalTest(successors);
 
-    private boolean dfsWithHeuristic(State currentState) {
-        incrementNodesExpanded();
-        if (currentState.isSolution()) {
-            this.solution = currentState;
-            return true;
-        }
+            // Apply heuristic h2: sort successors by Warnsdorff's rule,
+            // breaking ties by distance to corners
+            successors.sort(Comparator.comparingInt(this::calculateH2));
 
-        List<State> successors = expand(currentState);
-        applyGoalTest(successors);
-
-        // Apply heuristic h2: sort successors by Warnsdorff's rule, breaking ties by
-        // distance to corners
-        successors.sort(Comparator.comparingInt(this::calculateH2));
-
-        for (State successor : successors) {
-            if (dfsWithHeuristic(successor)) {
-                return true;
+            for (State successor : successors) {
+                stack.push(successor); // Push successors onto the stack
             }
         }
-
-        return false;
     }
 
     private int calculateH2(State state) {
