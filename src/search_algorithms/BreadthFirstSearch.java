@@ -10,24 +10,16 @@ public class BreadthFirstSearch extends SearchAlgorithm {
 
     public BreadthFirstSearch(State initialState) {
         super(initialState);
+        queue.add(initialState);
     }
 
     @Override
     public void search() {
-        State currentState = initialState;
-        while (shouldContinueSearch(currentState)) {
-            processState(currentState);
-            currentState = queue.poll();
+        while(!isSolutionFound() && !queue.isEmpty()) { // stop if solution found or queue is empty
+            State currentState = queue.pop();
+            List<State> successors = expand(currentState);
+            applyGoalTest(successors);
+            queue.addAll(successors);
         }
-    }
-
-    private boolean shouldContinueSearch(State currentState) {
-        return currentState != null && !isSolutionFound();
-    }
-
-    private void processState(State currentState) {
-        List<State> successors = expand(currentState);
-        applyGoalTest(successors);
-        queue.addAll(successors);
     }
 }
