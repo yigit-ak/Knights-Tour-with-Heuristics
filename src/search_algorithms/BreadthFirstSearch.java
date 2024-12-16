@@ -15,11 +15,14 @@ public class BreadthFirstSearch extends SearchAlgorithm {
 
     @Override
     public void search() {
-        while(!isSolutionFound() && !queue.isEmpty()) { // stop if solution found or queue is empty
+        int iterationCount = 0; // Initialize counter
+        while (!isSolutionFound() && !queue.isEmpty()) { // stop if solution found or queue is empty
+            iterationCount++; // Increment counter
             State currentState = queue.pop();
             List<State> successors = expand(currentState);
             applyGoalTest(successors);
             queue.addAll(successors);
+            System.out.println("While loop iterated " + iterationCount + " times."); // Log the count
         }
     }
 }

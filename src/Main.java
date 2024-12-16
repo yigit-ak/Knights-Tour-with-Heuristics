@@ -15,6 +15,8 @@ public class Main {
             printResults(searchAlgorithm, config.getMethod(), config.getTimeLimit(), endTime - startTime);
         } catch (OutOfMemoryError e) {
             System.err.println("Error: Out of memory.");
+        } catch (Exception e) {
+            System.err.println("Error: " + e.toString());
         }
     }
 

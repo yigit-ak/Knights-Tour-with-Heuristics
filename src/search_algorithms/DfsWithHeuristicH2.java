@@ -4,6 +4,7 @@ import problem_definition.State;
 import problem_definition.Location;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Stack;
 
@@ -17,18 +18,25 @@ public class DfsWithHeuristicH2 extends SearchAlgorithm {
 
     @Override
     public void search() {
+        int iterationCount = 0; // Initialize counter
         while (!stack.isEmpty() && !isSolutionFound()) {
+            iterationCount++; // Increment counter
             State currentState = stack.pop(); // Pop the most recent state (LIFO)
             List<State> successors = expand(currentState);
             applyGoalTest(successors);
 
             // Apply heuristic h2: sort successors by Warnsdorff's rule,
             // breaking ties by distance to corners
-            successors.sort(Comparator.comparingInt(this::calculateH2));
-
-            for (State successor : successors) {
-                stack.push(successor); // Push successors onto the stack
+            try {
+                successors = new ArrayList<>(successors); // Ensure the list is mutable
+                successors.sort(Comparator.comparingInt(this::calculateH2));
+            } catch (UnsupportedOperationException e) {
+                System.err.println("Sorting operation is not supported: " + e.getMessage());
             }
+
+            // Push sorted successors onto the stack
+            stack.addAll(successors);
+            System.out.println("While loop iterated " + iterationCount + " times."); // Log the count
         }
     }
 
