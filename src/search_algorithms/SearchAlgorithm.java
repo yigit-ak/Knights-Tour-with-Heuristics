@@ -7,25 +7,33 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeoutException;
 
 abstract public class SearchAlgorithm {
-    protected final State initialState;
+    public static final long TIME_LIMIT = 1 * 60 * 1000; // 1 minute
+    protected State initialState;
     protected State solution;
     protected int expandedNodeCount = 1;
+    protected long startTime = System.currentTimeMillis();
 
     public SearchAlgorithm(State initialState) {
         this.initialState = initialState;
     }
 
-    abstract public void search();
+    abstract public void search() throws TimeoutException;
 
-    protected List<State> expand(State state) {
+    protected List<State> expand(State state) throws OutOfMemoryError {
         Location lastPlacedKnight = state.locationOfLastPlacedKnight();
         List<Location> availableMoves = lastPlacedKnight.getLocationsForNextMove(state.board());
 
         incrementExpandedNodeCount(availableMoves.size());
-
-        return availableMoves.stream().map(state::addKnightAt).toList();
+        try {
+            return availableMoves.stream().map(state::addKnightAt).toList();
+        } catch (OutOfMemoryError e) {
+            this.initialState = null;
+            System.gc();
+            throw new OutOfMemoryError("Ran out of memory while expanding the state");
+        }
     }
 
     protected void applyGoalTest(Collection<State> states) {
@@ -66,5 +74,9 @@ abstract public class SearchAlgorithm {
 
     protected void incrementExpandedNodeCount(int nodeCount) {
         this.expandedNodeCount += nodeCount;
+    }
+
+    public long getStartTime() {
+        return startTime;
     }
 }
