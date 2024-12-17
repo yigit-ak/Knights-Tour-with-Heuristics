@@ -9,9 +9,10 @@ import java.util.List;
 public class OutputHandler {
     public static void experimentResultToConsole(ExperimentInstance experiment) {
         SearchAlgorithm searchAlgorithm = experiment.getSearchAlgorithm();
-        System.out.println("Search algorithm: " + searchAlgorithm.getClass().getName());
+        System.out.println("Search algorithm: " + experiment.getSearchAlgorithmName());
+        System.out.println("Time limit: " + SearchAlgorithm.TIME_LIMIT);
         System.out.println("Board size: " + searchAlgorithm.getBoardSize());
-        if (experiment.getErrorMessage().isPresent()) {
+        if (!experiment.getErrorMessage().isPresent()) {
             if (searchAlgorithm.isSolutionFound()) {
                 System.out.println("Status: A solution found.");
                 solutionPathToConsole(searchAlgorithm.getSolutionPath());
