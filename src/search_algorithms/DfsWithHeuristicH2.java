@@ -40,7 +40,7 @@ public class DfsWithHeuristicH2 extends SearchAlgorithm {
             checkConstraints(this);
         }
     }
-    
+
     private int retrieveNumberOfAvailableMoves(State state) {
         Location lastPlacedKnight = state.locationOfLastPlacedKnight();
         List<Location> availableMoves = lastPlacedKnight.getLocationsForNextMove(state.board());
