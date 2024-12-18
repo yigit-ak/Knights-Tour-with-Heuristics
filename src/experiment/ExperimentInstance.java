@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 
 import static util.OutputHandler.experimentResultToConsole;
+import static util.OutputHandler.experimentResultToFile;
 
 public class ExperimentInstance {
     final SearchAlgorithm searchAlgorithm;
@@ -29,6 +30,7 @@ public class ExperimentInstance {
             long endTime = System.currentTimeMillis();
             searchTime = endTime - searchAlgorithm.getStartTime();
             experimentResultToConsole(this);
+            experimentResultToFile(this);
         }
     }
 
@@ -46,6 +48,21 @@ public class ExperimentInstance {
                 return "Depth First Search with Heuristic H1B";
             case "search_algorithms.DfsWithEnhancedWarnsdorffRule":
                 return "Depth First Search with Heuristic H2";
+            default:
+                return "Unknown";
+        }
+    }
+
+    public String getShortAlgorithmName() {
+        switch (searchAlgorithm.getClass().getName()) {
+            case "search_algorithms.BreadthFirstSearch":
+                return "BFS";
+            case "search_algorithms.DepthFirstSearch":
+                return "DFS";
+            case "search_algorithms.DfsWithWarnsdorffRule":
+                return "DFS_H1B";
+            case "search_algorithms.DfsWithEnhancedWarnsdorffRule":
+                return "DFS_H2";
             default:
                 return "Unknown";
         }
