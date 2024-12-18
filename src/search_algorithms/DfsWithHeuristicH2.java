@@ -30,8 +30,8 @@ public class DfsWithHeuristicH2 extends SearchAlgorithm {
             successors = new ArrayList<>(successors);                             // Ensure the list is mutable
             successors.sort(
                     Comparator                                                    // Comparator sorts in ascending order
-                            .comparingInt(this::calculateWarnsdorff)              // Apply warnsdorff's rule (as in H1B)
-                            .thenComparingInt(this::retrieveDistanceToCorners)    // Break ties if equal (H2)
+                            .comparingInt(this::retrieveNumberOfAvailableMoves)   // Apply warnsdorff's rule (as in h1b)
+                            .thenComparingInt(this::retrieveDistanceToCorners)    // Break ties if equal (h2)
                             .reversed()     // Reverse the order to pop smaller values from stack first (LIFO)
             );
 
@@ -40,14 +40,14 @@ public class DfsWithHeuristicH2 extends SearchAlgorithm {
             checkConstraints(this);
         }
     }
-
-    private int calculateWarnsdorff(State state) {
+    
+    private int retrieveNumberOfAvailableMoves(State state) {
         Location lastPlacedKnight = state.locationOfLastPlacedKnight();
         List<Location> availableMoves = lastPlacedKnight.getLocationsForNextMove(state.board());
         return availableMoves.size(); // Number of onward moves (lower is better)
     }
 
-    // to apply H2
+    // to apply h2
     private int retrieveDistanceToCorners(State state) {
         // Distance to corners of the board (lower is better)
         return calculateDistanceToCorners(state.locationOfLastPlacedKnight(), state.board().length);
