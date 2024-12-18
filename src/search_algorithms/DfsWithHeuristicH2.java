@@ -27,8 +27,13 @@ public class DfsWithHeuristicH2 extends SearchAlgorithm {
 
             // Apply heuristic h2: sort successors by Warnsdorff's rule,
             // breaking ties by distance to corners
-            successors = new ArrayList<>(successors); // Ensure the list is mutable
-            successors.sort(Comparator.comparingInt(this::calculateH2).reversed());
+            successors = new ArrayList<>(successors);                             // Ensure the list is mutable
+            successors.sort(
+                    Comparator                                                    // Comparator sorts in ascending order
+                            .comparingInt(this::calculateWarnsdorff)              // Apply warnsdorff's rule (as in H1B)
+                            .thenComparingInt(this::retrieveDistanceToCorners)    // Break ties if equal (H2)
+                            .reversed()     // Reverse the order to pop smaller values from stack first (LIFO)
+            );
 
             // Push sorted successors onto the stack
             stack.addAll(successors);
@@ -36,18 +41,16 @@ public class DfsWithHeuristicH2 extends SearchAlgorithm {
         }
     }
 
-    private int calculateH2(State state) {
+    private int calculateWarnsdorff(State state) {
         Location lastPlacedKnight = state.locationOfLastPlacedKnight();
         List<Location> availableMoves = lastPlacedKnight.getLocationsForNextMove(state.board());
+        return availableMoves.size(); // Number of onward moves (lower is better)
+    }
 
-        // h1b: Number of onward moves (lower is better)
-        int onwardMoves = availableMoves.size();
-
-        // h2: Distance to corners (lower is better)
-        int distanceToCorners = calculateDistanceToCorners(lastPlacedKnight, state.board().length);
-
-        // Combine heuristics (prioritize onward moves, then resolve ties with distance)
-        return onwardMoves * 10 + distanceToCorners; // Weighted sum, adjust weights if needed
+    // to apply H2
+    private int retrieveDistanceToCorners(State state) {
+        int distanceToCorners = calculateDistanceToCorners(state.locationOfLastPlacedKnight(), state.board().length);
+        return  distanceToCorners; // Distance to corners of the board (lower is better)
     }
 
     /**
