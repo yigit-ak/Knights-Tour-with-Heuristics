@@ -9,14 +9,13 @@ import java.lang.reflect.Constructor;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-
         final Location START_LOCATION = new Location(0, 0);
         int[] boardSizes = { 8, 16, 32, 41, 52 };
         Class<?>[] searchAlgorithmClasses = {
-                //BreadthFirstSearch.class,
+                BreadthFirstSearch.class,
                 DepthFirstSearch.class
-                //DfsWithWarnsdorffRule.class,
-                //DfsWithEnhancedWarnsdorffRule.class
+                DfsWithWarnsdorffRule.class,
+                DfsWithEnhancedWarnsdorffRule.class
         };
 
         for (Class<?> searchAlgorithmClass : searchAlgorithmClasses) {
@@ -31,6 +30,5 @@ public class Main {
                 experimentInstance.runSearch();
             }
         }
-
     }
 }
