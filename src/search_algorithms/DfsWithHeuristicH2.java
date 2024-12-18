@@ -49,8 +49,8 @@ public class DfsWithHeuristicH2 extends SearchAlgorithm {
 
     // to apply H2
     private int retrieveDistanceToCorners(State state) {
-        int distanceToCorners = calculateDistanceToCorners(state.locationOfLastPlacedKnight(), state.board().length);
-        return  distanceToCorners; // Distance to corners of the board (lower is better)
+        // Distance to corners of the board (lower is better)
+        return calculateDistanceToCorners(state.locationOfLastPlacedKnight(), state.board().length);
     }
 
     /**
