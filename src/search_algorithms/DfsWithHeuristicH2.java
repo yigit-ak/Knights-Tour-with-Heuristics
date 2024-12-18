@@ -28,7 +28,7 @@ public class DfsWithHeuristicH2 extends SearchAlgorithm {
             // Apply heuristic h2: sort successors by Warnsdorff's rule,
             // breaking ties by distance to corners
             successors = new ArrayList<>(successors); // Ensure the list is mutable
-            successors.sort(Comparator.comparingInt(this::calculateH2));
+            successors.sort(Comparator.comparingInt(this::calculateH2).reversed());
 
             // Push sorted successors onto the stack
             stack.addAll(successors);

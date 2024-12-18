@@ -46,9 +46,9 @@ public class ExperimentInstance {
                 return "Breadth First Search";
             case "search_algorithms.DepthFirstSearch":
                 return "Depth First Search";
-            case "search_algorithms.DfsWithWarnsdorffRule":
+            case "search_algorithms.DfsWithHeuristicH1B":
                 return "Depth First Search with Heuristic H1B";
-            case "search_algorithms.DfsWithEnhancedWarnsdorffRule":
+            case "search_algorithms.DfsWithHeuristicH2":
                 return "Depth First Search with Heuristic H2";
             default:
                 return "Unknown";
@@ -61,9 +61,9 @@ public class ExperimentInstance {
                 return "BFS";
             case "search_algorithms.DepthFirstSearch":
                 return "DFS";
-            case "search_algorithms.DfsWithWarnsdorffRule":
+            case "search_algorithms.DfsWithHeuristicH1B":
                 return "DFS_H1B";
-            case "search_algorithms.DfsWithEnhancedWarnsdorffRule":
+            case "search_algorithms.DfsWithHeuristicH2":
                 return "DFS_H2";
             default:
                 return "Unknown";

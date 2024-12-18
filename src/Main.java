@@ -9,10 +9,10 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         final Location START_LOCATION = new Location(0, 0);
-        int[] boardSizes = {8, 16, 32, 41, 52};
+        int[] boardSizes = { 8, 16, 32, 41, 52 };
         Class<?>[] searchAlgorithmClasses = {
-                //BreadthFirstSearch.class,
-                //DepthFirstSearch.class
+                BreadthFirstSearch.class,
+                DepthFirstSearch.class,
                 DfsWithHeuristicH1B.class,
                 DfsWithHeuristicH2.class
         };

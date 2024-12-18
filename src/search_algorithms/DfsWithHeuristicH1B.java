@@ -25,9 +25,9 @@ public class DfsWithHeuristicH1B extends SearchAlgorithm {
             List<State> successors = expand(currentState);
             applyGoalTest(successors);
 
-            // Apply heuristic h1b: sort successors by Warnsdorff's rule
+            // Apply heuristic h1b: sort successors by Warnsdorff's rule in descending order
             successors = new ArrayList<>(successors); // Ensure the list is mutable
-            successors.sort(Comparator.comparingInt(this::calculateH1b));
+            successors.sort(Comparator.comparingInt(this::calculateH1b).reversed());
 
             // Push sorted successors onto the stack
             stack.addAll(successors);
