@@ -21,21 +21,15 @@ public record State(boolean[][] board, Location locationOfLastPlacedKnight, Opti
     }
 
     public State addKnightAt(Location location) throws OutOfMemoryError {
-        try {
-            boolean[][] newBoard = deepCopy(board);
-            newBoard[location.row()][location.column()] = true;
-            return new State(newBoard, location, Optional.of(this));
-        } catch (OutOfMemoryError e) {
-            System.gc();
-            throw new OutOfMemoryError();
-        }
+        boolean[][] newBoard = deepCopy(board);
+        newBoard[location.row()][location.column()] = true;
+        return new State(newBoard, location, Optional.of(this));
     }
 
     public boolean isSolution() {
         for (boolean[] row : board) {
             for (boolean isOccupiedByKnight : row) {
-                if (!isOccupiedByKnight)
-                    return false;
+                if (!isOccupiedByKnight) return false;
             }
         }
         return true;

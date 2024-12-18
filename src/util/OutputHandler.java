@@ -6,12 +6,14 @@ import search_algorithms.SearchAlgorithm;
 
 import java.util.List;
 
+import static experiment.ExperimentInstance.expandedNodeCount;
+
 public class OutputHandler {
     public static void experimentResultToConsole(ExperimentInstance experiment) {
         SearchAlgorithm searchAlgorithm = experiment.getSearchAlgorithm();
-        System.out.println("Search algorithm: " + searchAlgorithm.getClass().getName());
+        System.out.println("\nSearch algorithm: " + searchAlgorithm.getClass().getName());
         System.out.println("Board size: " + searchAlgorithm.getBoardSize());
-        if (experiment.getErrorMessage().isPresent()) {
+        if (experiment.getErrorMessage().isEmpty()) {
             if (searchAlgorithm.isSolutionFound()) {
                 System.out.println("Status: A solution found.");
                 solutionPathToConsole(searchAlgorithm.getSolutionPath());
@@ -22,7 +24,7 @@ public class OutputHandler {
         } else {
             System.out.println("Status: " + experiment.getErrorMessage().get());
         }
-        System.out.println("Number of extended nodes: " + searchAlgorithm.getExpandedNodeCount());
+        System.out.println("Number of extended nodes: " + expandedNodeCount);
     }
 
     public static void experimentResultToFile(ExperimentInstance experiment) {

@@ -7,33 +7,30 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeoutException;
+
+import static experiment.ExperimentInstance.expandedNodeCount;
 
 abstract public class SearchAlgorithm {
-    public static final long TIME_LIMIT = 1 * 60 * 1000; // 1 minute
+    public static final long TIME_LIMIT = 15 * 60 * 1000; // 15 minute
     protected State initialState;
     protected State solution;
-    protected int expandedNodeCount = 1;
     protected long startTime = System.currentTimeMillis();
+    protected int boardSize;
 
     public SearchAlgorithm(State initialState) {
         this.initialState = initialState;
+        expandedNodeCount = 1;
+        boardSize = initialState.board().length;
     }
 
-    abstract public void search() throws TimeoutException;
+    abstract public void search();
 
     protected List<State> expand(State state) throws OutOfMemoryError {
         Location lastPlacedKnight = state.locationOfLastPlacedKnight();
         List<Location> availableMoves = lastPlacedKnight.getLocationsForNextMove(state.board());
 
         incrementExpandedNodeCount(availableMoves.size());
-        try {
-            return availableMoves.stream().map(state::addKnightAt).toList();
-        } catch (OutOfMemoryError e) {
-            this.initialState = null;
-            System.gc();
-            throw new OutOfMemoryError("Ran out of memory while expanding the state");
-        }
+        return availableMoves.stream().map(state::addKnightAt).toList();
     }
 
     protected void applyGoalTest(Collection<State> states) {
@@ -42,8 +39,7 @@ abstract public class SearchAlgorithm {
     }
 
     protected void applyGoalTest(State state) {
-        if (state.isSolution())
-            this.solution = state;
+        if (state.isSolution()) this.solution = state;
     }
 
     public boolean isSolutionFound() {
@@ -65,18 +61,19 @@ abstract public class SearchAlgorithm {
     }
 
     public int getBoardSize() {
-        return initialState == null ? 0 : initialState.board().length;
-    }
-
-    public int getExpandedNodeCount() {
-        return this.expandedNodeCount;
+        return boardSize;
     }
 
     protected void incrementExpandedNodeCount(int nodeCount) {
-        this.expandedNodeCount += nodeCount;
+        expandedNodeCount += nodeCount;
     }
 
     public long getStartTime() {
         return startTime;
+    }
+
+    public void nullifyStates() {
+        initialState = null;
+        solution = null;
     }
 }

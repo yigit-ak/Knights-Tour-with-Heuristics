@@ -1,7 +1,9 @@
+import experiment.ExperimentInstance;
 import problem_definition.Location;
 import problem_definition.State;
-import search_algorithms.*;
-import experiment.ExperimentInstance;
+import search_algorithms.BreadthFirstSearch;
+import search_algorithms.DepthFirstSearch;
+import search_algorithms.SearchAlgorithm;
 
 import java.lang.reflect.Constructor;
 
@@ -11,10 +13,10 @@ public class Main {
         final Location START_LOCATION = new Location(0, 0);
         int[] boardSizes = {8, 16, 32, 41, 52};
         Class<?>[] searchAlgorithmClasses = {
-                BreadthFirstSearch.class,
-                DepthFirstSearch.class,
-                DfsWithWarnsdorffRule.class,
-                DfsWithEnhancedWarnsdorffRule.class
+                //BreadthFirstSearch.class,
+                DepthFirstSearch.class
+                //DfsWithWarnsdorffRule.class,
+                //DfsWithEnhancedWarnsdorffRule.class
         };
 
         for (Class<?> searchAlgorithmClass : searchAlgorithmClasses) {

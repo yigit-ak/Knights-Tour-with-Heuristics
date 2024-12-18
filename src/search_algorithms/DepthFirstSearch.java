@@ -5,6 +5,8 @@ import problem_definition.State;
 import java.util.List;
 import java.util.Stack;
 
+import static util.ExceedChecker.checkConstraints;
+
 public class DepthFirstSearch extends SearchAlgorithm {
     private final Stack<State> stack = new Stack<>();
 
@@ -20,6 +22,7 @@ public class DepthFirstSearch extends SearchAlgorithm {
             List<State> successors = expand(currentState);
             applyGoalTest(successors);
             stack.addAll(successors);
+            checkConstraints(this);
         }
     }
 }
