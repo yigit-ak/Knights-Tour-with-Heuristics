@@ -31,7 +31,7 @@ public class DfsWithHeuristicH2 extends SearchAlgorithm {
             successors.sort(
                     Comparator // Comparator sorts in ascending order
                             .comparingInt(this::calculateNumberOfAvailableMoves) // Apply warnsdorff's rule (as in h1b)
-                            .thenComparingInt(this::calculateDistanceToCorners) // Break ties if equal (h2)
+                            .thenComparingInt(this::calculateDistanceToEdges) // Break ties if equal (h2)
                             .reversed() // Reverse the order to pop smaller values from stack first (LIFO)
             );
 
@@ -47,21 +47,21 @@ public class DfsWithHeuristicH2 extends SearchAlgorithm {
         return availableMoves.size(); // Number of onward moves (lower is better)
     }
 
-    private int calculateDistanceToCorners(State state) {
+    private int calculateDistanceToEdges(State state) {
         Location location = state.locationOfLastPlacedKnight();
         int boardSize = state.board().length;
         int row = location.row();
         int col = location.column();
 
-        int[] cornerDistances = new int[] {
-                row + col, // Top-left corner (0, 0)
-                row + (boardSize - 1 - col), // Top-right corner (0, n-1)
-                (boardSize - 1 - row) + col, // Bottom-left corner (n-1, 0)
-                (boardSize - 1 - row) + (boardSize - 1 - col) // Bottom-right corner (n-1, n-1)
+        int[] edgeDistances = new int[] {
+        row,                        // distance to top edge
+        boardSize - 1 - row,        // distance to bottom edge
+        col,                        // distance to left edge
+        boardSize - 1 - col,        // distance to right edge
         };
 
         int minDistance = Integer.MAX_VALUE;
-        for (int distance : cornerDistances) {
+        for (int distance : edgeDistances) {
             minDistance = Math.min(minDistance, distance);
         }
 

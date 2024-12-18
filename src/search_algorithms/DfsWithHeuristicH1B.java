@@ -27,7 +27,7 @@ public class DfsWithHeuristicH1B extends SearchAlgorithm {
 
             // Apply heuristic h1b: sort successors by Warnsdorff's rule in descending order
             successors = new ArrayList<>(successors); // Ensure the list is mutable
-            successors.sort(Comparator.comparingInt(this::retrieveNumberOfAvailableMoves).reversed());
+            successors.sort(Comparator.comparingInt(this::calculateNumberOfAvailableMoves).reversed());
 
             // Push sorted successors onto the stack
             stack.addAll(successors);
@@ -36,9 +36,10 @@ public class DfsWithHeuristicH1B extends SearchAlgorithm {
     }
 
     // to apply h1b
-    private int retrieveNumberOfAvailableMoves(State state) {
+    private int calculateNumberOfAvailableMoves(State state) {
         Location lastPlacedKnight = state.locationOfLastPlacedKnight();
         List<Location> availableMoves = lastPlacedKnight.getLocationsForNextMove(state.board());
         return availableMoves.size(); // Number of onward moves (lower is better)
     }
 }
+
