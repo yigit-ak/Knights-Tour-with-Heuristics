@@ -1,30 +1,23 @@
 import search_algorithms.*;
 import problem_definition.*;
 
-import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        ExperimentConfig config = new ExperimentConfig(8, 'a', 900); // Example configuration
 
-        System.out.print("Enter board size (n): ");
-        int n = scanner.nextInt();
+        try {
+            SearchAlgorithm searchAlgorithm = createSearchAlgorithm(config.getBoardSize(), config.getMethod());
 
-        System.out.print("Enter search method (a-d): ");
-        char method = scanner.next().charAt(0);
+            long startTime = System.currentTimeMillis();
+            searchAlgorithm.search();
+            long endTime = System.currentTimeMillis();
 
-        System.out.print("Enter time limit (t) in seconds: ");
-        int timeLimit = scanner.nextInt();
-
-        scanner.close();
-
-        SearchAlgorithm searchAlgorithm = createSearchAlgorithm(n, method);
-
-        long startTime = System.currentTimeMillis();
-        searchAlgorithm.search();
-        long endTime = System.currentTimeMillis();
-
-        printResults(searchAlgorithm, method, timeLimit, endTime - startTime);
+            printResults(searchAlgorithm, config.getMethod(), config.getTimeLimit(), endTime - startTime);
+        } catch (OutOfMemoryError e) {
+            System.err.println("Error: Out of memory.");
+        } catch (Exception e) {
+            System.err.println("Error: " + e.toString());
+        }
     }
 
     private static SearchAlgorithm createSearchAlgorithm(int n, char method) {
@@ -32,8 +25,8 @@ public class Main {
         return switch (method) {
             case 'a' -> new BreadthFirstSearch(initialState);
             case 'b' -> new DepthFirstSearch(initialState);
-            case 'c' -> new DfsWithWarnsdorffRule(initialState);
-            case 'd' -> new DfsWithEnhancedWarnsdorffRule(initialState);
+            case 'c' -> new DfsWithHeuristicH1B(initialState);
+            case 'd' -> new DfsWithHeuristicH2(initialState);
             default -> throw new IllegalArgumentException("Invalid search method");
         };
     }
@@ -50,8 +43,7 @@ public class Main {
             System.out.println("No solution exists.");
         }
 
-        // TODO: Implement this method in SearchAlgorithm.java
-        // System.out.println("Number of nodes expanded: " +
-        // searchAlgorithm.getNumberOfNodesExpanded());
+        System.out.println("Number of nodes expanded: " +
+                searchAlgorithm.getNumberOfNodesExpanded());
     }
 }
