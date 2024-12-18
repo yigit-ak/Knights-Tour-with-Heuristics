@@ -20,20 +20,14 @@ public class DfsWithHeuristicH1B extends SearchAlgorithm {
 
     @Override
     public void search() {
-        int iterationCount = 0; // Initialize counter
         while (!stack.isEmpty() && !isSolutionFound()) {
-            iterationCount++; // Increment counter
             State currentState = stack.pop(); // Pop the most recent state (LIFO)
             List<State> successors = expand(currentState);
             applyGoalTest(successors);
 
             // Apply heuristic h1b: sort successors by Warnsdorff's rule
-            try {
-                successors = new ArrayList<>(successors); // Ensure the list is mutable
-                successors.sort(Comparator.comparingInt(this::calculateH1b));
-            } catch (UnsupportedOperationException e) {
-                System.err.println("Sorting operation is not supported: " + e.getMessage());
-            }
+            successors = new ArrayList<>(successors); // Ensure the list is mutable
+            successors.sort(Comparator.comparingInt(this::calculateH1b));
 
             // Push sorted successors onto the stack
             stack.addAll(successors);

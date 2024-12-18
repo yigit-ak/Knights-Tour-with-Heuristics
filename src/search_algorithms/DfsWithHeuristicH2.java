@@ -20,21 +20,15 @@ public class DfsWithHeuristicH2 extends SearchAlgorithm {
 
     @Override
     public void search() {
-        int iterationCount = 0; // Initialize counter
         while (!stack.isEmpty() && !isSolutionFound()) {
-            iterationCount++; // Increment counter
             State currentState = stack.pop(); // Pop the most recent state (LIFO)
             List<State> successors = expand(currentState);
             applyGoalTest(successors);
 
             // Apply heuristic h2: sort successors by Warnsdorff's rule,
             // breaking ties by distance to corners
-            try {
-                successors = new ArrayList<>(successors); // Ensure the list is mutable
-                successors.sort(Comparator.comparingInt(this::calculateH2));
-            } catch (UnsupportedOperationException e) {
-                System.err.println("Sorting operation is not supported: " + e.getMessage());
-            }
+            successors = new ArrayList<>(successors); // Ensure the list is mutable
+            successors.sort(Comparator.comparingInt(this::calculateH2));
 
             // Push sorted successors onto the stack
             stack.addAll(successors);
@@ -52,8 +46,7 @@ public class DfsWithHeuristicH2 extends SearchAlgorithm {
         // h2: Distance to corners (lower is better)
         int distanceToCorners = calculateDistanceToCorners(lastPlacedKnight, state.board().length);
 
-        // Combine heuristics (e.g., prioritize onward moves, then resolve ties with
-        // distance)
+        // Combine heuristics (prioritize onward moves, then resolve ties with distance)
         return onwardMoves * 10 + distanceToCorners; // Weighted sum, adjust weights if needed
     }
 

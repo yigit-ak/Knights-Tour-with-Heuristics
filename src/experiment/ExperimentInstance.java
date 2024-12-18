@@ -5,7 +5,6 @@ import exceptions.TimeExceedException;
 import search_algorithms.SearchAlgorithm;
 
 import java.util.Optional;
-import java.util.concurrent.TimeoutException;
 
 import static util.ExceptionHandler.outOfMemoryExceptionHandler;
 import static util.OutputHandler.experimentResultToConsole;
