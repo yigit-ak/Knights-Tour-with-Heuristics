@@ -28,7 +28,6 @@ abstract public class SearchAlgorithm {
     protected List<State> expand(State state) throws OutOfMemoryError {
         Location lastPlacedKnight = state.locationOfLastPlacedKnight();
         List<Location> availableMoves = lastPlacedKnight.getLocationsForNextMove(state.board());
-
         incrementExpandedNodeCount(availableMoves.size());
         return availableMoves.stream().map(state::addKnightAt).toList();
     }
