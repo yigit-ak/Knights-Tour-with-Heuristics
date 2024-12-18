@@ -8,6 +8,8 @@ import java.util.Comparator;
 import java.util.Stack;
 import java.util.ArrayList;
 
+import static util.ExceedChecker.checkConstraints;
+
 public class DfsWithHeuristicH1B extends SearchAlgorithm {
     private final Stack<State> stack = new Stack<>();
 
@@ -35,7 +37,7 @@ public class DfsWithHeuristicH1B extends SearchAlgorithm {
 
             // Push sorted successors onto the stack
             stack.addAll(successors);
-            System.out.println("While loop iterated " + iterationCount + " times."); // Log the count
+            checkConstraints(this);
         }
     }
 

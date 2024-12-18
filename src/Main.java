@@ -1,49 +1,34 @@
+import experiment.ExperimentInstance;
+import problem_definition.Location;
+import problem_definition.State;
 import search_algorithms.*;
-import problem_definition.*;
+
+import java.lang.reflect.Constructor;
 
 public class Main {
-    public static void main(String[] args) {
-        ExperimentConfig config = new ExperimentConfig(8, 'a', 900); // Example configuration
+    public static void main(String[] args) throws Exception {
 
-        try {
-            SearchAlgorithm searchAlgorithm = createSearchAlgorithm(config.getBoardSize(), config.getMethod());
-
-            long startTime = System.currentTimeMillis();
-            searchAlgorithm.search();
-            long endTime = System.currentTimeMillis();
-
-            printResults(searchAlgorithm, config.getMethod(), config.getTimeLimit(), endTime - startTime);
-        } catch (OutOfMemoryError e) {
-            System.err.println("Error: Out of memory.");
-        } catch (Exception e) {
-            System.err.println("Error: " + e.toString());
-        }
-    }
-
-    private static SearchAlgorithm createSearchAlgorithm(int n, char method) {
-        State initialState = new State(new boolean[n][n], new Location(0, 0));
-        return switch (method) {
-            case 'a' -> new BreadthFirstSearch(initialState);
-            case 'b' -> new DepthFirstSearch(initialState);
-            case 'c' -> new DfsWithHeuristicH1B(initialState);
-            case 'd' -> new DfsWithHeuristicH2(initialState);
-            default -> throw new IllegalArgumentException("Invalid search method");
+        final Location START_LOCATION = new Location(0, 0);
+        int[] boardSizes = {8, 16, 32, 41, 52};
+        Class<?>[] searchAlgorithmClasses = {
+                //BreadthFirstSearch.class,
+                //DepthFirstSearch.class
+                DfsWithHeuristicH1B.class,
+                DfsWithHeuristicH2.class
         };
-    }
 
-    private static void printResults(SearchAlgorithm searchAlgorithm, char method, int timeLimit, long timeSpent) {
-        System.out.println("Search method: " + method);
-        System.out.println("Time limit: " + timeLimit + " seconds");
+        for (Class<?> searchAlgorithmClass : searchAlgorithmClasses) {
+            for (int boardSize : boardSizes) {
+                boolean[][] board = new boolean[boardSize][boardSize];
+                State initialState = new State(board, START_LOCATION);
 
-        if (searchAlgorithm.isSolutionFound()) {
-            System.out.println("A solution found.");
-            System.out.println("Solution path: " + searchAlgorithm.getSolutionPath());
-            System.out.println("Time spent: " + timeSpent + " milliseconds");
-        } else {
-            System.out.println("No solution exists.");
+                Constructor<?> constructor = searchAlgorithmClass.getDeclaredConstructor(State.class);
+                SearchAlgorithm searchAlgorithm = (SearchAlgorithm) constructor.newInstance(initialState);
+
+                ExperimentInstance experimentInstance = new ExperimentInstance(searchAlgorithm);
+                experimentInstance.runSearch();
+            }
         }
 
-        System.out.println("Number of nodes expanded: " +
-                searchAlgorithm.getNumberOfNodesExpanded());
     }
 }
